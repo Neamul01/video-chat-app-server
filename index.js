@@ -19,13 +19,13 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-    socket.imit('me', socket.id);
+    socket.emit('me', socket.id);
 
     socket.on('disconnect', () => {
         socket.broadcast.emit('callend');
     })
 
-    socket.io('calluser', ({ userToCall, signalData, from, name }) => {
+    socket.on('calluser', ({ userToCall, signalData, from, name }) => {
         io.to(userToCall).emit('calluser', { signal: signalData, from, name });
     })
 
