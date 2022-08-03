@@ -19,6 +19,16 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', (socket) => {
+    // message chat 
+    socket.on('join_room', () => {
+        socket.join(socket.id)
+    })
+
+    socket.on('send_message', (data) => {
+        socket.to(socket.id).emit('receive_message', data)
+    })
+
+    // video call 
     socket.emit('me', socket.id);
 
     socket.on('disconnect', () => {
